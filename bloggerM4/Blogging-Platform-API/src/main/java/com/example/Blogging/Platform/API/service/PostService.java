@@ -52,12 +52,17 @@ public class PostService {
 
             //****////***** update post ***
     public String  updatePostById(String email, String tokenValue, Integer postId, String caption) {
+
+
         if (authenticationTokenService.authenticate(email, tokenValue)) {
 
-            Post newPost= iPostRepo.findById(postId).orElseThrow();
-            newPost.setPostCaption(caption);
-            iPostRepo.save(newPost);
-            return "Blog post updated" ;
+          Post existingPost = iPostRepo.findById(postId).orElseThrow();
+          if (existingPost.getPostOwner().getUserEmail().equals(email)){
+
+              existingPost.setPostCaption(caption);
+              iPostRepo.save(existingPost);
+              return "Blog post updated" ;
+          }
 
         }
         return "invalid credentials";

@@ -98,9 +98,14 @@ public class CommentService {
     public String updateCommentById(String email, String tokenValue, Integer commentId, String commentBody) {
 
         if(authenticationTokenService.authenticate(email,tokenValue)) {
-            Comment comment = iCommentRepo.findById(commentId).orElseThrow();
-            comment.setCommentBody(commentBody);
-            return "comment updated";
+
+            Comment existingComment = iCommentRepo.findById(commentId).orElseThrow();
+            if (existingComment.getBlogPost().getPostOwner().getUserEmail().equals(email)){
+
+                existingComment.setCommentBody(commentBody);
+                return "comment updated";
+            }
+            return "invalid credential";
         }
         else {
             return "Un Authenticated access!!!";
