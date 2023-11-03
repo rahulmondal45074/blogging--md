@@ -103,7 +103,7 @@ public class CommentService {
             if (existingComment.getBlogPost().getPostOwner().getUserEmail().equals(email)){
 
                 existingComment.setCommentBody(commentBody);
-                return "comment updated";
+                return "comment updated ";
             }
             return "invalid credential";
         }
